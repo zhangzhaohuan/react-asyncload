@@ -1,0 +1,31 @@
+div.batch-table {
+  @border: solid 1px #e3e3e3;
+  div.aps-grid-row {
+    border-bottom: @border;
+    div.aps-grid-col {
+      line-height: 28px;
+      .aps-check-box-group {
+        li {
+          margin: 0;
+          width:auto;
+          line-height:0px;
+          label {
+            margin:0 6px 2px 0;
+          }
+        }
+      }
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  div.batch-lenged {
+    text-align: right;
+  }
+  border:@border;
+  margin: 15px 0;
+  table.aps-table td,
+  table.aps-table th {
+    padding: 5px 10px !important;
+  }
+}
