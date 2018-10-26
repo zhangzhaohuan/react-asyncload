@@ -187,7 +187,7 @@ export function isBoolean(obj) {
  */
 export function isElement(obj) {
   if (isNull(obj)) return false;
-  if (win.Element) {
+  if (window.Element) {
     return obj instanceof Element;
   } else {
     return (obj.tagName && obj.nodeType &&

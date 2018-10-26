@@ -1,4 +1,8 @@
-/* react-router4.0 BasicExample  */
+/**
+ * react-router4.0 BasicExample
+ * 按需加载
+ */
+
 import React from 'react'
 import {
   BrowserRouter as Router,
@@ -15,7 +19,7 @@ const Home = () => (
 const About = () => (
   <div>
     <h2>About</h2>
-    
+
   </div>
 )
 
@@ -46,27 +50,43 @@ const Topics = ({ match }) => (
       </li>
     </ul>
 
-    <Route path={`${match.url}/:topicId`} component={Topic}/>
-    <Route exact path={match.url} render={() => (
-      <h3>Please select a topic.</h3>
-    )}/>
+    <Route path={`${match.url}/:topicId`} component={Topic} />
+    <Route exact path={match.url} render={() => {
+      return <h3>Please select a topic.</h3>
+    }
+    } />
   </div>
 )
 
 class AC extends React.Component {
   state = {
-    A: null
+    component: null
   }
   async componentDidMount() {
-    const { default: A } = await this.props.loader;
+    const { default: Component } = await this.props.loader;
     this.setState({
-      A: <A {...this.props} />
+      component: <Component {...this.props} />
     });
   }
   render() {
-    return this.state.A;
+    return this.state.component;
   }
 }
+
+
+const ListItemLink = ({ to, ...rest }) => (
+  <Route path={to} children={(props) => {
+    console.log(props);
+    return (
+      <li className={props.match ? 'active' : ''}>
+        <Link to={to} {...rest} />
+      </li>
+    )
+  }
+  } />
+)
+
+
 
 const BasicExample = () => (
   <Router>
@@ -77,16 +97,31 @@ const BasicExample = () => (
         <li><Link to="/topics">Topics</Link></li>
         <li><Link to="/others">其他</Link></li>
         <li><Link to="/something">something</Link></li>
-      
       </ul>
-      <hr/>
-      <Route exact path="/" component={Home}/>
-      <Route path="/about" component={About}/>
-      <Route path="/topics" component={Topics}/>
-      <Route path="/something" component={Something}/>
+      <hr />
+      <Route strict path="/home/" component={Home} />
+      {/* <Route exact path="/home" render={(props) => {
+        console.log(props.match);
+        return <Home />
+      }} /> */}
+      <Route strict path="/about" component={About} />
+      {/* <Route path="/about" children={(props) => {
+        console.log(props.match);
+        return <About />
+      }} /> */}
+
+      <Route path="/topics" component={Topics} />
+      {/* <Route path="/something" component={Something}/> */}
+      <Route path="/something" render={(props) => (
+        <AC {...props} loader={import('./components/Something')} />
+      )} />
       <Route path="/others" render={(props) => (
         <AC {...props} loader={import('./components/Others')} />
       )} />
+      <ul>
+        <ListItemLink to="/somewhere" />
+        <ListItemLink to="/somewhere-else" />
+      </ul>
     </div>
   </Router>
 )
