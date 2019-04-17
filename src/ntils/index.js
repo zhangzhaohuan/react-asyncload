@@ -3,6 +3,10 @@
  */
 export function noop() { };
 
+/**
+ * @param obj 参数
+ * @return {String} "[object Object]"、"[object Number]"、"[object String]"、"[object Array]"、"[object Boolean]"、"[object Null]、"[object Undefined]""
+ */
 export function toString(obj) {
   return Object.prototype.toString.call(obj);
 }
